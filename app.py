@@ -31,16 +31,18 @@ EMAIL_PASS  = "qdpdxivnnvfiqexr"
 ALERT_EMAIL = "sunnyviraj9@gmail.com"
 
 # -------------------------------
-# Model: Tiny-MCNN
+# Model: Tiny-MCNN (must match train.py exactly)
 # -------------------------------
 class TinyMCNN(nn.Module):
     def __init__(self):
         super().__init__()
         self.net = nn.Sequential(
-            nn.Conv2d(3, 16, 3, 1, 1), nn.ReLU(), nn.MaxPool2d(2),
-            nn.Conv2d(16, 32, 3, 1, 1), nn.ReLU(), nn.MaxPool2d(2),
-            nn.Conv2d(32, 64, 3, 1, 1), nn.ReLU(),
-            nn.Conv2d(64,  1, 1)
+            nn.Conv2d(3,  16, 3, 1, 1), nn.BatchNorm2d(16), nn.ReLU(), nn.MaxPool2d(2),
+            nn.Conv2d(16, 32, 3, 1, 1), nn.BatchNorm2d(32), nn.ReLU(), nn.MaxPool2d(2),
+            nn.Conv2d(32, 64, 3, 1, 1), nn.BatchNorm2d(64), nn.ReLU(),
+            nn.Dropout2d(0.1),
+            nn.Conv2d(64, 32, 3, 1, 1), nn.ReLU(),
+            nn.Conv2d(32,  1, 1),
         )
 
     def forward(self, x):
